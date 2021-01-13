@@ -4,33 +4,22 @@
 name: Checkrun
 
 on:
-  issue_comment:
+  pull_request_review_comment:
     types: [created]
-  workflow_dispatch:
 
 jobs:
   build:
-    if: ${{ github.event.issue.pull_request && github.event.comment.body == '/check' }}
+    if: ${{ github.event.comment.body == '/check' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Checkout Pull Request
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PR_URL="${{ github.event.issue.pull_request.url }}"
-          PR_NUM=${PR_URL##*/}
-          echo "Checking out from PR #$PR_NUM based on URL: $PR_URL"
-          hub pr checkout $PR_NUM
       - name: git-config
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
       - name: Echo
         run: |
-          echo "running"
           cat README.md
-          echo "end"
       - name: Sleep for 30 seconds
         uses: jakejarvis/wait-action@master
         with:
