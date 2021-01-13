@@ -31,3 +31,7 @@ jobs:
           echo "running"
           cat README.md
           echo "end"
+      - name: Sleep for 30 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: "30s"
