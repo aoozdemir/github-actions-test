@@ -6,13 +6,17 @@ name: Checkrun
 on:
   pull_request:
     branches: [master]
+    types: [opened]
   issue_comment:
     types: [created]
   workflow_dispatch:
 
 jobs:
   build:
-    # if: ${{ (github.event_name == 'push' && !contains(toJSON(github.event.commits[0].message), '[skip ci]')) || (github.event.issue.pull_request && github.event.comment.body == '/build') }}
+    if: |
+      (github.event_name == 'pull_request' && github.event.action == 'opened') ||
+      (github.event_name == 'push' && !contains(toJSON(github.event.commits[0].message), '[skip ci]')) ||
+      (github.event.issue.pull_request && github.event.comment.body == '/build')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -24,3 +28,4 @@ jobs:
         run: |
           cat README.md
           echo ${{ github.event_name }}
+          echo ${{ github.event.action }}
