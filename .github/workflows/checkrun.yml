@@ -13,8 +13,7 @@ on:
 jobs:
   build:
     if: |
-      (github.event_name == 'pull_request' && github.event.action == 'opened') ||
-      (github.event_name == 'pull_request' && !contains(toJSON(github.event.commits[0].message), '[skip ci]')) ||
+      !contains(toJSON(github.event.commits[0].message), '[skip ci]') ||
       (github.event.issue.pull_request && github.event.comment.body == '/build')
     runs-on: ubuntu-latest
     steps:
