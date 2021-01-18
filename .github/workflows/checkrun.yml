@@ -25,5 +25,3 @@ jobs:
       - name: Echo
         run: |
           cat README.md
-          echo ${{ github.event_name }}
-          echo ${{ github.event.action }}
